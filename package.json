@@ -1,0 +1,22 @@
+{
+  "name": "cxoviz",
+  "version": "1.0.0",
+  "description": "data viz for cxo ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "armin.akhavan@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "billboard.js": "^1.2.0",
+    "crossfilter": "^1.3.12",
+    "d3": "^4.12.2",
+    "dc": "^2.1.9",
+    "express": "^4.16.2",
+    "serve-static": "^1.13.1"
+  },
+  "engines": {
+    "node": "latest"
+  }
+}

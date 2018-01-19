@@ -151,6 +151,7 @@ slider.transition() // Gratuitous intro!
     });
 
 function hue(h) {
+  console.log(h);
   handle.attr("cx", x(h));
   svg.style("background-color", d3.hsl(h, 0.8, 0.8));
 }	
@@ -197,18 +198,18 @@ function dataDidLoad(error, j,k) { //add topics if necessary
         
       })
       // parse k
-      k.forEach(function(each) {
-        // if ((indexOf.call(scity, each.town) >= 0)) {
-        _data2.push(
-        {
-          "2015": +each.2015,
-          "2016": +each.2016,
-          "Title": +each.title,
+      // k.forEach(function(each) {
+      //   // if ((indexOf.call(scity, each.town) >= 0)) {
+      //   _data2.push(
+      //   {
+      //     "2015": +each.2015,
+      //     "2016": +each.2016,
+      //     "Title": +each.title,
           
-        }
-        )
+      //   }
+      //   )
         
-      })
+      // })
 
       console.log(_data)
         var _nestedData = d3.nest()
@@ -226,6 +227,20 @@ function dataDidLoad(error, j,k) { //add topics if necessary
         x_data.push(mnt_data["Year"]);
         
       })
+
+
+      _data2.forEach(function(mnt_data){
+//        console.log(mnt_data)
+        data2_point1.push(mnt_data["2015"]);
+        data2_point2.push(mnt_data["2016"]);
+        // data_point3.push(mnt_data["Percent Shortfall"]);
+        x_data.push(mnt_data["Year"]);
+        
+      })
+
+
+
+
  		data_point1.unshift("Demand");
       data_point2.unshift("Supply");
             // data_point3.unshift("Percent Shortfall");

@@ -35,16 +35,34 @@
 
 .area {
   fill: lightsteelblue;
+  opacity: 0.6;
 }
 
 .line {
   fill: none;
   stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke-width: 2.5px;
 }
 
 .dot {
   fill: white;
   stroke: steelblue;
   stroke-width: 1.5px;
+}
+
+.demandLine {
+  fill: none;
+  stroke: red;
+  stroke-width: 1.5px;
+}
+
+.demandArea {
+  fill: red;
+  opacity: 0.6;
+}
+
+
+.areaSupplyBaseRetained {
+  fill: gray;
+  opacity: 0.6;
 }

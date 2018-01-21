@@ -279,10 +279,10 @@ var y = d3.scaleLinear()
     // .curve(d3.curveCatmullRomOpen)
 
 var q = d3.queue(
-  ).defer(d3.csv, "graph1-state0.csv"
+  ).defer(d3.csv, "https://arminakvn.github.io/cxoviztemp/graph1-state0.csv"
   // loading the slider table / data
-  ).defer(d3.csv, "graph1-slider1-higher_edit.2018-0120.csv"
-  ).defer(d3.csv, "chart2-data-security-jobs.csv");
+  ).defer(d3.csv, "https://arminakvn.github.io/cxoviztemp/graph1-slider1-higher_edit.2018-0120.csv"
+  ).defer(d3.csv, "https://arminakvn.github.io/cxoviztemp/chart2-data-security-jobs.csv");
 q.await(dataDidLoad);
 
 

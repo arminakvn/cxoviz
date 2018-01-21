@@ -1,283 +1,134 @@
 (function() {
-  var b_chart;
-  var _data;
-  var _z_data;
-  var data_parsed;
-  var s_w = 360;
-  var s_h = 100;
-
-
-
-  var state_of_viz = d3.map()
-  state_of_viz.set('drag_location', 0);
-
-function updateChart (xinvert,slid_item) {
-  console.log("slid_item",slid_item)
-  console.log('xinvert', xinvert)
-  
-  console.log(_data)
-  console.log('_z_data',_z_data)    
-
-  var _new_data = []
-  var _supp_load = []
-  // _data = _z_data
-  console.log("----------------",(Math.round(xinvert)).toString().split('.')[0])
-  if ((Math.round(xinvert)).toString().split('.')[0] == '0'){
-    _supp_load = data_parsed[2]
-  } else {
-  _data.forEach( function(e) {
-    // console.log("e",e)
-          // get the increase from the lookup
-        var lookup_change = slid_item.filter(function(d){
-
-          return d["tick"] == (Math.round(xinvert)).toString();
-        }) 
-        console.log("lookup change",lookup_change)
-        for (var k in lookup_change[0]){
-          // console.log("k",k)
-          // console.log("lookup_change",lookup_change[0][k], k)
-          if (k == e["Year"]){
-            console.log(lookup_change[0][k], "is change to apply to year ", k)
-            if (lookup_change[0][k] == 0){
-              console.log("oush it")
-              _new_data.push(e)
-            } else {
-              var new_supply = e["Supply"] + (+lookup_change[0][k])*1000
-              e["Supply"] = new_supply
-              _new_data.push(e)
-              
-            }
-          }
-          // for year/item k, apply the change to the data!
-
-        }
-        // console.log("e[supp", e["Supply"])
-        // for (i = 0; i < lookup_change.length; i++) {
-        //   console.log("lookup_change",lookup_change[i])
-        // }
-          // e["Supply"] = 
-        // }
-  });
-  _supp_load.push("Supply")
-  _new_data.forEach(function(nd){
-    _supp_load.push(nd["Supply"])
-  })
-}
-  // console.log("_new_data",_new_data)
-  console.log("data_parsed",data_parsed)
-  
-  // _data = _new_data
-  console.log("_supp_load",_supp_load)
-  // b_chart.unload("Supply")
-  // console.log(b_chart.unload())
-  // console.log(_supp_load)
-  // b_chart.hide(["Supply"])
-  // b_chart.show(["Supply"])
-  b_chart.load({
-    columns: [_supp_load],
-    unload: ["Supply"]
-  });
-    // b_chart.show(["Supply"])
-
-  // _data = _new_data
-}
-function initViz(data_parsed){
-
-	
-      b_chart = bb.generate({
-      	 bindto: "#chart_1",
-        size: {
-          width: 840,
-          height: 450
-        },
-       
-        data: {
-            x: 'Year',
-            columns: data_parsed,
-            type: 'area-spline',
-//             labels: {
-//               format:  function (v, id, i, j) { 
-// //                  console.log("v,id,i,j",v,id,i,j)
-//                 val = v * 2281;
-//                 return d3.format('$, ')(v.toFixed(0)) //+ '%' + '(' + val.toFixed(0) + ')'
-//               }
-//             },
-			// ,
-
-            // axes: {
-            //     "RTA Ridership": 'y',
-            //     "Revenue Service Hours": 'y2'
-            // }
-          },
-   
-        // data: {
-        //     json: data_parsed,
-        //     keys: {
-        //         value: ['ridership']
-        //     },
-        //     // groups: [['public_transit', 'walk', 'bicycle', 'other', 'car']],
-        //     colors: {
-        //     'public_transit': base_color,
-        //     'walk': base_color.darker(1),
-        //     'bicycle':base_color.darker(2),
-        //     'other':base_color.darker(3),
-        //     'car':base_color.darker(4)
-        //     },
-        //     type: 'line'
-        //   },
-           axis: {
  
-                 x: {
-                    type: 'category',
-                      categories: data_parsed.map(function(d){
-//                        console.log(d["Year"])
-                        return d["Year"];
-                      }),
-                  // height: 100
-              },
-              y: {
-                  label: {
-                    text: 'Demand',
-                     position: 'outer-middle'
-                  },
-                  // max: 35000000,
-                  tick: {
-                    format: d3.format(",")
-                    //or format: function (d) { return '$' + d; }
-                  }
-                  // max: 1
 
-              },
-              y2: {
-                show: true,
-                // max: 1400000,
-                // min: 0,
-                tick: {
-                    format: d3.format(",")
-                }, 
-                label: {
-                    text: 'Supply',
-                    // position: 'outer-middle'
-                  },
 
-              }
-          },
-          subchart: {
-                show: false
-            },
-          // regions: [
-          //   {axis: 'y', start: 0, end: total_mean , class: 'region-1-3'},
-          // //   {axis: 'x', start: 2.5, end:5.5 , class: 'region-3-5'}
-          // ],
-          legend: {
-              show: false
-          }
-      })
+
+
+
+function initSlider3 (_data, f ,slid_item) {
+  const svg = d3.select('body').append('svg')
+      .attr('height', 500)
+      .attr('width', 500)
+      
+    const mySlider = slid3r()
+      .width(200)
+      .range([-10,10])
+      .startPos(0)
+      .label('Supply')
+      .numTicks(21)
+      .loc([50, 50])
+      .onDrag((pos) => d3.select('#sliderValue').text(pos))
+      .onDone(function(pos){
+         var lookup_change = slid_item.filter(function(d){
+
+          return d["tick"] == (pos).toString();
+        }) ;
+
+         for (i = 0; i < _data.length; i++){
+
+      d = _data[i]
+      console.log(d["Year"],lookup_change)
+     console.log( lookup_change[0][d["Year"]])
+     d["Supply"] = d["Supply"] + +lookup_change[0][d["Year"]]
+
+
+  }
+
+
+         updateData(pos,_data,lookup_change);
+        });
+  
+    svg.append('g').call(mySlider);
 }
 
 
 
-function initSlider(j_slid, slid_item){
-
-  var slider_item =  d3.select("body").append("div");
-  slider_item.attr('width', s_w + 40);
-  slider_item.attr('height', s_h + 90);
-  slider_item.selectAll("text").data(slid_item).enter().append("text").attr("x", 0)
-    .attr("text-anchor", "middle").text(function(d){
-    return d;
-  })
-
-	var svg = d3.select("body").append("svg");
-
-	svg.attr('width', s_w);
-	svg.attr('height', s_h);
-	console.log(svg)
-    margin = {right: 50, left: 50};
-
-    var width = +svg.attr("width") - margin.left - margin.right;
-    var height = +svg.attr("height");
-    console.log(width, height)
-
-    ticks_sl = [];
-    j_slid.forEach(function(each){
-      ticks_sl.push(+(each["tick"]))
-    })
-var x = d3.scaleLinear()
-    .domain([ticks_sl[0],ticks_sl[ticks_sl.length - 1]])
-    .rangeRound([0, width])
-    .clamp(true);
-
-var slider = svg.append("g")
-    .attr("class", "slider")
-    .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
-
-slider.append("line")
-    .attr("class", "track")
-    .attr("x1", x.range()[0])
-    .attr("x2", x.range()[1])
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-inset")
-  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-overlay")
-    .call(d3.drag()
-        .on("start.interrupt", function() { 
-          slider.interrupt(); 
-        })
-        .on("start drag", function() { 
-          console.log("x.invert(d3.event.x) ",x.invert(d3.event.x));
-          // console.log(d3.event)
-          // updateChart(x.invert(d3.event.x),j_slid);
-
-          hue(x.invert(d3.event.x)); 
-        })
-        .on("end", function() { 
-          console.log("x.invert(d3.event.x) ",x.invert(d3.event.x));
-          console.log("state",state_of_viz.get("drag_location"))
-          if (state_of_viz.get("drag_location")!=x.invert(d3.event.x)){
-
-          // console.log(d3.event)
-          updateChart(x.invert(d3.event.x),j_slid);
-          state_of_viz.set('drag_location', x.invert(d3.event.x));
-        }
-
-          // hue(x.invert(d3.event.x)); 
-        }));
-
-slider.insert("g", ".track-overlay")
-    .attr("class", "ticks")
-    // .tickPadding(0)
-    .attr("transform", "translate(0," + 18 + ")")
-  .selectAll("text")
-  .data(
-    x.ticks(20)
-  )
-  .enter().append("text")
-    .attr("x", x)
-    .attr("text-anchor", "middle")
-    .text(function(d) { return d; });
-
-var handle = slider.insert("circle", ".track-overlay")
-    .attr("class", "handle")
-    .attr("r", 9)
-    .attr("cx", x(0));
-
-// slider.transition() // Gratuitous intro!
-//     .duration(750)
-//     .tween("hue", function() {
-//       var i = d3.interpolate(0, 70);
-//       return function(t) { 
-//         hue(i(t)); 
-//       };
-//     });
-
-function hue(h) {
-  console.log(h);
-  handle.attr("cx", x(h));
-  // svg.style("background-color", d3.hsl(h, 0.8, 0.8));
-}	
 
 
+function initViz3 (_data) {
+  var svg = d3.select("#chart_1").append("svg");
+  svg.attr('width', c_w);
+  svg.attr('height', c_h);
+  var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var parseTime = d3.timeParse("%d-%b-%y");
+ x = d3.scaleTime()
+    .rangeRound([0, width]);
+ y = d3.scaleLinear()
+    .rangeRound([height, 0]);
+
+
+
+
+     xAxis = d3.axisBottom(x);
+
+ yAxis = d3.axisLeft(y);
+
+
+
+
+
+ area = d3.area()
+    .x(function(d) { return x(d.date); })
+    .y1(function(d) { return y(d["Supply"]); });
+
+ line = d3.line()
+    // .interpolate("basis")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d["Supply"]); })
+    .curve(d3.curveCatmullRomOpen)
+    // .curve(d3.curveStep)
+    // .context(context);
+// d3.tsv("data.tsv", function(d) {
+//   d.date = parseTime(d.date);
+//   d.close = +d.close;
+//   return d;
+// }, function(error, data) {
+//   if (error) throw error;
+
+  x.domain(d3.extent(_data, function(d) { return d.date; }));
+  y.domain([d3.min(_data, function(d) { return d["Supply"]; }), d3.max(_data, function(d) { return d["Supply"]; })]);
+  
+g.append("path")
+  .data([_data])
+      .attr("class", "line")
+      .attr("d", line);
+
+  area.y0(y(d3.min(_data, function(d) { return d["Supply"]; })));
+
+  // g.append("path")
+  //     .datum(_data)
+  //     .attr("fill", "steelblue")
+  //     .attr("d", area);
+  
+
+
+
+  g.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  g.append("g")
+      .call(d3.axisLeft(y))
+    .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("");
+// });
 }
+
+
+
+
+
+
+
 
 
 function dataDidLoad(error, j, j_slid, k) { //add topics if necessary
@@ -287,21 +138,21 @@ function dataDidLoad(error, j, j_slid, k) { //add topics if necessary
      console.log("j_slid",j_slid);
      
 
-       data_parsed = []
-       _data = []
-       _z_data = []
-       x_data = []
-       data_point1 = []
-       data_point2 = []
-       data_point3 = []
+       var data_parsed = []
+       var _data = []
+       var  _z_data = []
+       var x_data = []
+       var data_point1 = []
+       var data_point2 = []
+       var data_point3 = []
 
 
-       data2_parsed = []
-       _data2 = []
-       x_data2 = []
-       data2_point1 = []
-       data2_point2 = []
-       data2_point3 = []
+       var data2_parsed = []
+      var _data2 = []
+       var x_data2 = []
+       var data2_point1 = []
+       var data2_point2 = []
+       var data2_point3 = []
       
       // parse j 
       j.forEach(function(each) {
@@ -384,14 +235,38 @@ function dataDidLoad(error, j, j_slid, k) { //add topics if necessary
 
       console.log("data_parsed",data_parsed)
 // _z_data = data_parsed
+state_of_viz.set('_data', _data);
 
-initSlider(j_slid, ["Supply"]);
-      initViz(data_parsed);
 
+
+
+
+
+
+
+
+
+      initViz3(_data);
+
+
+initSlider3(_data, ["Supply"],j_slid);
 }
 
 
+state_of_viz = d3.map()
+  var b_chart;
+  // var _data;
+  var _z_data;
+  var data_parsed;
+  var s_w = 360;
+  var s_h = 100;
 
+  var c_w = 960;
+  var c_h = 500;
+  var x, y,xAxis,yAxis, line, area, _data;
+
+  
+  state_of_viz.set('drag_location', 0);
 
 
 
@@ -402,6 +277,58 @@ var q = d3.queue(
   ).defer(d3.csv, "https://arminakvn.github.io/cxoviz/graph1-slider1-higher_ed.csv"
   ).defer(d3.csv, "https://arminakvn.github.io/cxoviz/chart2-data-security-jobs.csv");
 q.await(dataDidLoad);
+
+
+
+
+function updateData(pos,_data,lookup_change) {
+
+  console.log(pos,lookup_change,_data)
+
+  
+
+ 
+
+console.log(lookup_change)
+
+// let data = [];
+
+
+   
+
+
+console.log(_data)
+    // Get the data again
+    // d3.csv("data-alt.csv", function(error, data) {
+
+      //   data.forEach(function(d) {
+      //   d.date = parseDate(d.date);
+      //   d.close = +d.close;
+      // });
+
+      // Scale the range of the data again 
+      x.domain(d3.extent(_data, function(d) { return d.date; }));
+      y.domain([0, d3.max(_data, function(d) { return d["Supply"]; })]);
+      // console.log(x,y)
+    // Select the section we want to apply our changes to
+    var svg = d3.select("svg").transition();
+    console.log(svg.select("path.line") )
+    // Make the changes
+        svg.select(".line") 
+        .data(_data)
+            // .attr("d", line(_data))
+            .duration(70)
+            .attr("d", line);
+        svg.select(".x.axis") // change the x axis
+            .duration(70)
+            .call(xAxis);
+        svg.select(".y.axis") // change the y axis
+            .duration(70)
+            .call(yAxis);
+
+    // });
+}
+
 
 
 

@@ -50,11 +50,9 @@
 
 
 
-  g.append("path")
-    .data([_data])
-    .attr("class", "demandLine")
-    .attr("d", demandLine);
+  
     demandArea.y0(y(0));
+
     g.append("path")
     .data([_data])
     .attr("fill", "red")
@@ -65,21 +63,36 @@
     .call(xAxis);
 
 
-
-
     g.append("path")
     .data([_data])
-    .attr("class", "line")
-    .attr("d", supplyLine);
-    supplyArea.y0(y(0));
+    .attr("class", "demandLine")
+    .attr("d", demandLine);
+
+   
+
+
+    
+supplyArea.y0(y(0));
+
     g.append("path")
     .data([_data])
     .attr("fill", "steelblue")
     .attr("class", "area")
     .attr("d", supplyArea);
+
+    
+
+    g.append("path")
+    .data([_data])
+    .attr("class", "line")
+    .attr("d", supplyLine);
+
+
     g.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
+    
+
     g.append("g")
     .call(yAxis)
     .attr("class","yaxistext")
@@ -217,16 +230,18 @@
         // var xAxis = d3.axisBottom(x);
         //   var yAxis = d3.axisLeft(y);
       // Make the changes
+  
+    g.select("path.area") 
+      .datum(new_data)
+      // .duration(70)
+      .attr("d", supplyArea(new_data));
+
     g.select("path.line") 
       .datum(new_data)
           // .attr("d", line(_data))
           // .duration(70)
       .attr("d", supplyLine(new_data));
-      
-      g.select("path.area") 
-      // .datum(new_data)
-      // .attr("d", line(_data))
-      // .duration(70)
-      // .attr("d", supplyArea(new_data));
+
+     
     }
 })();

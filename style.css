@@ -1,46 +1,18 @@
-.ticks {
-  font: 10px sans-serif;
+#chart_1 {
+  font-family: "DamienDisplay", sans-serif;  font-weight: 200;  font-size: 13px;
 }
 
-.track,
-.track-inset,
-.track-overlay {
-  stroke-linecap: round;
-}
-
-.track {
-  stroke: #000;
-  stroke-opacity: 0.3;
-  stroke-width: 10px;
-}
-
-.track-inset {
-  stroke: #ddd;
-  stroke-width: 8px;
-}
-
-.track-overlay {
-  pointer-events: stroke;
-  stroke-width: 50px;
-  stroke: transparent;
-  cursor: crosshair;
-}
-
-.handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: 0.5;
-  stroke-width: 1.25px;
-}
-
-.area {
-  fill: lightsteelblue;
-  opacity: 0.6;
-}
 
 .line {
   fill: none;
   stroke: steelblue;
+  stroke-width: 2.5px;
+}
+
+
+.lines {
+  fill: none;
+  /*stroke: steelblue;*/
   stroke-width: 2.5px;
 }
 
@@ -58,11 +30,11 @@
 
 .demandArea {
   fill: red;
-  opacity: 0.6;
+  opacity: 0.9;
 }
 
 
-.areaSupplyBaseRetained {
-  fill: gray;
-  opacity: 0.6;
+.line {
+  fill: none;
+  stroke-width: 1.5px;
 }

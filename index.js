@@ -583,14 +583,14 @@ var data_parsed = []
   .y(function(d) { return y(d["Supply"]); })
 
   var q = d3.queue(
-    ).defer(d3.csv, "graph1-state0.csv"
-    ).defer(d3.csv, "graph1-slider1-higher_edit.2018-0120.csv")
+    ).defer(d3.csv, "https://arminakvn.github.io/cxoviz/graph1-state0.csv"
+    ).defer(d3.csv, "https://arminakvn.github.io/cxoviz/graph1-slider1-higher_edit.2018-0120.csv")
     // ).defer(d3.csv, "chart2-data-security-jobs.csv");
     q.await(dataDidLoad);
 
 
      var q2 = d3.queue(
-    ).defer(d3.csv, "chart2-data-security-jobs-top10.csv")
+    ).defer(d3.csv, "https://arminakvn.github.io/cxoviz/chart2-data-security-jobs-top10.csv")
 
 
     q2.await(dataDidLoad2);
